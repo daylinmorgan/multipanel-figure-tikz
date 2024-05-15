@@ -1,0 +1,20 @@
+\documentclass[tikz,border=0cm]{standalone}
+
+\newcommand{\figwidth}{16cm}
+\newcommand{\figheight}{10cm}
+
+\input{tex/preamble.tex}
+
+% \toggletrue{draft} % draft mode (must be after preamble)
+
+\begin{document}
+\begin{multipanelfigure}
+
+	\panel{.5,9}{A}{\includegraphics[width=6cm]{bevo.pdf}};
+	\panel{.5,5}{B}{\includegraphics[width=6cm]{diller.jpg}};
+	\panel{7.5,9}{C}{\includegraphics[width=4.5cm]{tower.pdf}};
+	\panel{7.5,3.8}{D}{\includegraphics[width=4.5cm]{lobby.jpg}};
+	\panel{13,9}{E}{\includegraphics[height=8cm]{tower-tall.pdf}};
+
+\end{multipanelfigure}
+\end{document}

@@ -1,0 +1,54 @@
+ 
+% Load necessary packages:
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning} % allows nodes to be defined relative to each other
+\usepackage{etoolbox} % conditional toggles
+% setting font
+\usepackage[scaled]{helvet}
+\usepackage[T1]{fontenc}
+\renewcommand\familydefault{\sfdefault}
+
+% Define figure properties:
+\newcommand{\fontselect}{\large\bf} % label FONT STYLE
+
+\graphicspath{{panels}}
+
+% Custom nodes:
+\tikzset{
+  labelNode/.style={anchor=south east, above left=0cm and 0cm of anchor, font=\fontselect}, % labels
+  redAnchorNode/.style={
+    anchor=center, left=-0.1cm of anchor, circle, fill=red, minimum size=0.2cm
+    }, % red anchor dots
+  graphicNode/.style={anchor=north west, below right=0cm and 0cm of anchor}, % graphics
+}
+
+% Toggle between draft mode & final copy: 
+\newtoggle{draft}
+% \toggletrue{draft} % draft mode
+% \togglefalse{draft} % final-copy mode
+
+\newcommand{\panel}[3]{
+  \node (anchor) at (#1) {};
+  \node[labelNode] {#2};
+  \node[graphicNode] (image) {#3};
+  \useasboundingbox (image.south east) rectangle (image.north west); % <-- to center wrt this rectangle
+  \iftoggle{draft}{
+    \node [redAnchorNode] {};
+  };
+}
+
+\newcommand{\figurebox}{
+  \iftoggle{draft}{
+    \node[anchor=south west, rectangle, draw, red, line width=2pt, minimum width=\figwidth, minimum height=\figheight] at (0,0) {};
+    \draw[step=1cm,blue,thin] (0,0) grid (\figwidth,\figheight); % helper grid
+    \draw[step=0.5cm,gray,very thin] (0,0) grid (\figwidth,\figheight); % helper grid
+  }
+  {\node[anchor=south west, rectangle, fill=white, minimum width=\figwidth, minimum height=\figheight] at (0,0) {};};
+}
+
+\newenvironment{multipanelfigure}
+{\begin{tikzpicture}[every node/.style={inner sep=0pt}]\figurebox}
+{\end{tikzpicture}}
+
+\IfFileExists{tex/draft.tex}{\input{tex/draft.tex}}{}
